@@ -1,17 +1,13 @@
--- DuyMod Hub Main
+-- DuyMod Hub
 
-local DuyMod = {}
-DuyMod.Name = "DuyMod Hub"
-DuyMod.Version = "1.0"
+local Hub = {}
 
--- Services
-local HttpService = game:GetService("HttpService")
+Hub.Name = "DuyMod Hub"
+Hub.Version = "1.0"
 
--- GitHub Raw Base URL
-local BASE_URL = "https://raw.githubusercontent.com/Genesis-scripter-osp/DuyModHub/main/"
+local BASE_URL = "https://raw.githubusercontent.com/Genesis-scripter-osp/DuyChuyenChe/main/"
 
--- Load module function
-local function LoadModule(path)
+local function Load(path)
     local success, result = pcall(function()
         return loadstring(game:HttpGet(BASE_URL .. path))()
     end)
@@ -19,43 +15,36 @@ local function LoadModule(path)
     if success then
         return result
     else
-        warn("DuyMod: Failed to load -> "..path)
+        warn("Failed:", path)
         warn(result)
     end
 end
 
-print("Loading "..DuyMod.Name)
+print("Loading "..Hub.Name)
 
--- Load Core
-local Core = LoadModule("Core/Init.lua")
+-- Config
+Load("Config/settings.lua")
+Load("Config/keysystem.lua")
 
--- Load Config
-local Config = LoadModule("Config/Settings.lua")
+-- Core
+Load("Core/Network System")
+Load("Core/Game Loader System")
+Load("Core/Dragon Update System")
 
--- Load UI
-local UI = LoadModule("UI/UI.lua")
+-- UI
+Load("UI/Loader.lua")
+Load("UI/MainUI.lua")
 
--- Load Modules
-local Modules = {}
+-- Modules
+Load("Modules/Combat")
+Load("Modules/ESP")
+Load("Modules/Farming")
+Load("Modules/Misc")
+Load("Modules/Movement")
 
-Modules.AutoFarm = LoadModule("Modules/AutoFarm.lua")
-Modules.ESP = LoadModule("Modules/ESP.lua")
+-- Game Scripts
+Load("Games/universal.lua")
 
--- Game detection
-local Games = {
-    [2753915549] = "Games/BloxFruits.lua",
-}
+print("DuyMod Hub Loaded")
 
-local placeId = game.PlaceId
-
-if Games[placeId] then
-    print("Game supported -> loading script")
-    LoadModule(Games[placeId])
-else
-    print("Unknown game -> loading universal")
-    LoadModule("Games/Universal.lua")
-end
-
-print(DuyMod.Name.." Loaded | Version "..DuyMod.Version)
-
-return DuyMod
+return Hub
