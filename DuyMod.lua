@@ -24,10 +24,10 @@ print("Loading DuyMod Hub...")
 -- CORE SYSTEM
 -------------------------
 
-Load("Core/DragonUpdateSystem")
-Load("Core/GameLoaderSystem")
-Load("Core/NetworkSystem")
-Load("Core/UINetworkVisualSystem")
+Load("Core/DragonUpdateSystem.lua")
+Load("Core/GameLoaderSystem.lua")
+Load("Core/NetworkSystem.lua")
+Load("Core/UINetworkVisualSystem.lua")
 
 -------------------------
 -- CORE MODULES
