@@ -58,4 +58,5 @@ function UI:CreateButton(parent,text,callback)
 
 end
 
+_G.DuyUI = UI
 return UI
