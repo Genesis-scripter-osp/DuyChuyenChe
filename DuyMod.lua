@@ -3,7 +3,6 @@
 
 local BASE_URL = "https://raw.githubusercontent.com/Genesis-scripter-osp/DuyChuyenChe/main/"
 
--- loader function
 local function Load(path)
     local success, result = pcall(function()
         return game:HttpGet(BASE_URL .. path)
@@ -19,19 +18,43 @@ local function Load(path)
     end
 end
 
---========================
--- Core System
---========================
+print("Loading DuyMod Hub...")
 
-Load("Core/init.lua")
-Load("Core/ui.lua")
-Load("Core/network.lua")
-Load("Core/visual.lua")
-Load("Core/system.lua")
+-------------------------
+-- CORE SYSTEM
+-------------------------
 
---========================
--- Modules
---========================
+Load("Core/DragonUpdateSystem")
+Load("Core/GameLoaderSystem")
+Load("Core/NetworkSystem")
+Load("Core/UINetworkVisualSystem")
+
+-------------------------
+-- CORE MODULES
+-------------------------
+
+-- UI
+Load("Core/UI/ui_main.lua")
+Load("Core/UI/toggles.lua")
+Load("Core/UI/sliders.lua")
+
+-- Network
+Load("Core/Network/http.lua")
+Load("Core/Network/server.lua")
+Load("Core/Network/update.lua")
+
+-- Security
+Load("Core/Security/anti_tamper.lua")
+Load("Core/Security/encryption.lua")
+
+-- Visual
+Load("Core/Visual/animation.lua")
+Load("Core/Visual/effects.lua")
+Load("Core/Visual/notifications.lua")
+
+-------------------------
+-- GAME MODULES
+-------------------------
 
 -- Combat
 Load("Modules/Combat/aimbot.lua")
@@ -39,6 +62,7 @@ Load("Modules/Combat/kill_aura.lua")
 
 -- ESP
 Load("Modules/ESP/player_esp.lua")
+Load("Modules/ESP/item_esp.lua")
 
 -- Farming
 Load("Modules/Farming/autofarm.lua")
