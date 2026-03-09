@@ -1,41 +1,61 @@
--- DuyMod Main
+-- DuyMod Hub Main
 
-local Core = {}
-Core.Modules = {}
+local DuyMod = {}
+DuyMod.Name = "DuyMod Hub"
+DuyMod.Version = "1.0"
 
-function Core:LoadModule(name,url)
-    local success, module = pcall(function()
-        return loadstring(game:HttpGet(url))()
+-- Services
+local HttpService = game:GetService("HttpService")
+
+-- GitHub Raw Base URL
+local BASE_URL = "https://raw.githubusercontent.com/Genesis-scripter-osp/DuyModHub/main/"
+
+-- Load module function
+local function LoadModule(path)
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(BASE_URL .. path))()
     end)
 
     if success then
-        self.Modules[name] = module
-        print("[DuyMod] Loaded:",name)
+        return result
     else
-        warn("[DuyMod] Failed:",name)
+        warn("DuyMod: Failed to load -> "..path)
+        warn(result)
     end
 end
 
--- load core systems
+print("Loading "..DuyMod.Name)
 
-Core:LoadModule(
-"UI",
-"https://raw.githubusercontent.com/DuyMod/Core/UI.lua"
-)
+-- Load Core
+local Core = LoadModule("Core/Init.lua")
 
-Core:LoadModule(
-"Network",
-"https://raw.githubusercontent.com/DuyMod/Core/Network.lua"
-)
+-- Load Config
+local Config = LoadModule("Config/Settings.lua")
 
-Core:LoadModule(
-"Visual",
-"https://raw.githubusercontent.com/DuyMod/Core/Visual.lua"
-)
+-- Load UI
+local UI = LoadModule("UI/UI.lua")
 
-Core:LoadModule(
-"Games",
-"https://raw.githubusercontent.com/DuyMod/Core/GameLoader.lua"
-)
+-- Load Modules
+local Modules = {}
 
-return Core
+Modules.AutoFarm = LoadModule("Modules/AutoFarm.lua")
+Modules.ESP = LoadModule("Modules/ESP.lua")
+
+-- Game detection
+local Games = {
+    [2753915549] = "Games/BloxFruits.lua",
+}
+
+local placeId = game.PlaceId
+
+if Games[placeId] then
+    print("Game supported -> loading script")
+    LoadModule(Games[placeId])
+else
+    print("Unknown game -> loading universal")
+    LoadModule("Games/Universal.lua")
+end
+
+print(DuyMod.Name.." Loaded | Version "..DuyMod.Version)
+
+return DuyMod
