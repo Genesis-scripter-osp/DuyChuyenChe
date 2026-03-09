@@ -1,78 +1,57 @@
--- DuyMod Hub
+--// DuyMod Hub
+--// Main Loader
 
-local Hub = {}
-Hub.Name = "DuyMod Hub"
-Hub.Version = "1.0"
-
--- Github Raw Base
 local BASE_URL = "https://raw.githubusercontent.com/Genesis-scripter-osp/DuyChuyenChe/main/"
 
--- Function load script
+-- loader function
 local function Load(path)
     local success, result = pcall(function()
-        return loadstring(game:HttpGet(BASE_URL .. path))()
+        return game:HttpGet(BASE_URL .. path)
     end)
 
     if success then
-        print("[DuyMod] Loaded:", path)
-        return result
+        local run, err = pcall(loadstring(result))
+        if not run then
+            warn("DuyMod Error running:", path, err)
+        end
     else
-        warn("[DuyMod] Failed:", path)
-        warn(result)
+        warn("DuyMod Error loading:", path)
     end
 end
 
-print("Loading "..Hub.Name)
+--========================
+-- Core System
+--========================
 
--- Wait game load
-repeat task.wait() until game:IsLoaded()
+Load("Core/init.lua")
+Load("Core/ui.lua")
+Load("Core/network.lua")
+Load("Core/visual.lua")
+Load("Core/system.lua")
 
-------------------------------------------------
--- CONFIG
-------------------------------------------------
+--========================
+-- Modules
+--========================
 
-Load("Config/settings.lua")
-Load("Config/keysystem.lua")
+-- Combat
+Load("Modules/Combat/aimbot.lua")
+Load("Modules/Combat/kill_aura.lua")
 
-------------------------------------------------
--- CORE SYSTEM
-------------------------------------------------
+-- ESP
+Load("Modules/ESP/player_esp.lua")
 
-Load("Core/Network System.lua")
-Load("Core/Game Loader System.lua")
-Load("Core/Dragon Update System.lua")
-Load("Core/UI Network Visual System.lua")
+-- Farming
+Load("Modules/Farming/autofarm.lua")
+Load("Modules/Farming/autoquest.lua")
 
-------------------------------------------------
--- UI
-------------------------------------------------
+-- Misc
+Load("Modules/Misc/anti_afk.lua")
+Load("Modules/Misc/fpsboost.lua")
+Load("Modules/Misc/serverhop.lua")
 
-Load("UI/Loader.lua")
-
-task.wait(2)
-
-Load("UI/MainUI.lua")
-
-------------------------------------------------
--- MODULES
-------------------------------------------------
-
-Load("Modules/Combat.lua")
-Load("Modules/ESP.lua")
-Load("Modules/Farming.lua")
-Load("Modules/Misc.lua")
-Load("Modules/Movement.lua")
-
-------------------------------------------------
--- GAME SCRIPTS
-------------------------------------------------
-
-Load("Games/universal.lua")
-
-------------------------------------------------
--- FINISH
-------------------------------------------------
+-- Movement
+Load("Modules/Movement/fly.lua")
+Load("Modules/Movement/speed.lua")
+Load("Modules/Movement/teleport.lua")
 
 print("DuyMod Hub Loaded Successfully")
-
-return Hub
